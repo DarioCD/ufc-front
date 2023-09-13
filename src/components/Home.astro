@@ -1,0 +1,29 @@
+---
+import { getFighters } from "../services/fighter";
+import Event from "./Event.astro";
+
+const fighters = await getFighters();
+---
+
+<div>
+  <!-- <img src="/assets/adesanya-vd-strickland.jpg" /> -->
+  <!-- {
+    fighters.map((fighter) => {
+      return (
+        <div>
+          <h1>{fighter.name}</h1>
+        </div>
+      )
+    })
+  } -->
+  <Event/>
+</div>
+
+
+<style>
+  div {
+    margin-top: 30vh;
+    height: 100vh;
+  }
+
+</style>
