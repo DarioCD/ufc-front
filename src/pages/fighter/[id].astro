@@ -1,0 +1,21 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+import { getFighterById } from "../../services/fighter";
+
+const { id } = Astro.params;
+
+export const prerender = false;
+
+let fighter;
+
+if (id) {
+  fighter = await getFighterById({ id });
+}
+
+---
+
+<Layout title={fighter.name}>
+  <h1>{fighter.name}</h1>
+  <p>{fighter.description}</p>
+</Layout>

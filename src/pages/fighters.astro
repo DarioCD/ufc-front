@@ -11,7 +11,7 @@ const fighters = await getFighters();
   <ul>
     {fighters.map((fighter) => (
       <li>
-        <a href={`/fighters/${fighter.id}`}>{fighter.name}</a>
+        <a href={`/fighter/${fighter.id}`}>{fighter.name}</a>
       </li>
     ))}
   </ul>
