@@ -1,0 +1,18 @@
+---
+import { getFighters } from "../services/fighter";
+import Layout from "../layouts/Layout.astro";
+
+const fighters = await getFighters();
+
+---
+
+<Layout title="Fighters">
+  <h1>Fighters</h1>
+  <ul>
+    {fighters.map((fighter) => (
+      <li>
+        <a href={`/fighters/${fighter.id}`}>{fighter.name}</a>
+      </li>
+    ))}
+  </ul>
+</Layout>
