@@ -3,17 +3,16 @@ import { getEventById } from "../services/event";
 
 import Countdown from "./Counter";
 
-
 const id = 1;
 
 let event;
 
 if (id) {
-  event = await getEventById(id);
+  event = await getEventById({ id: id });
 }
 
-function formatDate(dateString) {
-  const options = {
+function formatDate(dateString: Date) {
+  const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -33,7 +32,7 @@ function formatDate(dateString) {
         <h1>{event.title}</h1>
         <p>{event.information}</p>
         <p>{formatDate(event.fightDate)}</p>
-        <Countdown targetDate={event.fightDate} client:visible/>
+        <Countdown targetDate={event.fightDate} client:visible />
       </div>
     )
   }

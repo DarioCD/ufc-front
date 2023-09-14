@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-
 import { getFighterById } from "../../services/fighter";
+import { type FighterAPI } from "../../types/fighter-api";
 
 const { id } = Astro.params;
 
@@ -12,10 +12,8 @@ let fighter;
 if (id) {
   fighter = await getFighterById({ id });
 }
-
 ---
 
 <Layout title={fighter.name}>
   <h1>{fighter.name}</h1>
-  <p>{fighter.description}</p>
 </Layout>

@@ -6,6 +6,12 @@ export const getFighters = async () => {
   return data;
 };
 
+export const getChampFighters = async () => {
+  const res = await fetch("http://localhost:5000/ufc/v1/fighter/champs");
+  const data = (await res.json()) as FighterAPI[];
+  return data;
+};
+
 export const getFighterById = async ({ id }: { id: string }) => {
   const res = await fetch(`http://localhost:5000/ufc/v1/fighter/${id}`);
 

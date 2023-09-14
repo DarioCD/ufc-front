@@ -1,18 +1,68 @@
 ---
-import { getFighters } from "../services/fighter";
+import { getChampFighters } from "../services/fighter";
+import { getRankingByFighterId } from "../services/ranking";
 import Layout from "../layouts/Layout.astro";
 
-const fighters = await getFighters();
+const champFighters = await getChampFighters();
+
 
 ---
 
 <Layout title="Fighters">
-  <h1>Fighters</h1>
-  <ul>
-    {fighters.map((fighter) => (
-      <li>
-        <a href={`/fighter/${fighter.id}`}>{fighter.name}</a>
-      </li>
-    ))}
-  </ul>
+  <div class="container">
+    <img src="/assets/ufc_logo.png" />
+    <h1>CAMPEONES</h1>
+    <div class="cardContainer">
+      {
+        champFighters.map(async (fighter) => {
+          const ranking = await getRankingByFighterId({ id: fighter.id });
+
+          return (
+            <div class="card">
+              {fighter.fighterPhoto ? (
+                <img
+                  src={`http://localhost:5000/ufc/v1/uploads/img/${fighter.fighterPhoto}`}
+                  alt="Sin foto"
+                />
+              ) : (
+                <img
+                  src="http://localhost:5000/ufc/v1/uploads/img/Default.png"
+                  alt="Sin foto"
+                />
+              )}
+              <a href={`/fighter/${fighter.id}`}>
+                <p>
+                  {fighter.name.toLocaleUpperCase() +
+                    " " +
+                    fighter.surname.toLocaleUpperCase()}
+                </p>
+              </a>
+              <p>{fighter.record}</p>
+              <p>{fighter.nickname}</p>
+              <p>{fighter.weight}</p>
+              <p>{fighter.height}</p>
+              <p>{ranking ? `Nombre: ${ranking.name}, Peso: ${ranking.weight}` : "Sin ranking"}</p>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+  <style>
+    img {
+      width: 40px;
+      height: auto;
+      cursor: pointer;
+    }
+    h1 {
+      font-size: 50px;
+      margin-top: 50px;
+    }
+    .container {
+      margin-top: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
 </Layout>

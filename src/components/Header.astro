@@ -16,12 +16,16 @@
   <div>Buscador</div>
 </header>
 <script>
-  window.addEventListener("scroll", function () {
+  document.addEventListener("DOMContentLoaded", function () {
     const header = document.querySelector("header");
-    if (window.scrollY > 0) {
-      header.classList.add("fixed");
-    } else {
-      header.classList.remove("fixed");
+    if (header) {
+      window.addEventListener("scroll", function () {
+        if (window.scrollY > 0) {
+          header.classList.add("fixed");
+        } else {
+          header.classList.remove("fixed");
+        }
+      });
     }
   });
 </script>
@@ -37,9 +41,9 @@
     align-items: center;
     flex-wrap: nowrap;
     transition:
-      margin-left 0.5s linear,
-      margin-right 0.5s linear,
-      margin-top 0.2s ease;
+      margin-left 0.4s ease,
+      margin-right 0.4s ease,
+      margin-top 0.4s ease;
     z-index: 2;
     position: fixed;
     top: 0;
