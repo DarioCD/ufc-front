@@ -9,21 +9,21 @@ const champFighters = await getChampFighters();
 
 <Layout title="Fighters">
   <div class="container">
-    <h3 class="ufcTitle">UFC</h3>
     <h1>CAMPEONES</h1>
     <div class="cardContainer">
       {
         champFighters.map(async (fighter) => {
           const ranking = await getRankingByFighterId({ id: fighter.id });
-
           return (
             <a class="card" href={`/fighter/${fighter.id}`}>
               {ranking ? (
                 <div class="weightClassContainer">
-                  <p>{ranking.name}</p>
                   <p>
-                    {ranking.weight} lb [ {(ranking.weight / 2.205).toFixed(2)}{" "}
-                    Kg ]
+                    <strong>{ranking.name.toUpperCase()}</strong>
+                  </p>
+                  <p>
+                    {ranking.weight} lb [{" "}
+                    {(Number(ranking.weight) / 2.205).toFixed(2)} Kg ]
                   </p>
                   <p>
                     {fighter.height} in [ {(fighter.height / 39.37).toFixed(2)}{" "}
@@ -54,13 +54,22 @@ const champFighters = await getChampFighters();
                 <p>{fighter.record} [W-L-D]</p>
                 <p>
                   <strong>Última pelea:</strong> aquí ira la ultima pela del
-                  pelador
+                  peleador
                 </p>
               </div>
             </a>
           );
         })
       }
+    </div>
+    <div class="btnContainer">
+      <div class="btn">
+        <a href="/rankings">
+          Rankings
+          </a></div>
+      <div class="btn t">
+        <a href="/allFighters">Todos los peleadores</a>
+      </div>
     </div>
   </div>
   <style>
@@ -135,6 +144,45 @@ const champFighters = await getChampFighters();
       font-size: 12px;
       color: #d20a31;
       font-weight: bold;
+    }
+    .btnContainer {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-evenly;
+      width: 70%;
+      align-items: center;
+      margin-block: 100px;
+    }
+    .btn {
+      padding: 15px;
+      color: white;
+      background: black;
+      min-width: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn a {
+      color: white;
+      text-decoration: none;
+    }
+    .t a {
+      color: black;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      scale: 1.1;
+      transition: 0.2s;
+    }
+    .t {
+      background: white;
+      color: black;
+      border: 1px solid black;
     }
   </style>
 </Layout>
