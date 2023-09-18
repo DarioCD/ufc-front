@@ -7,3 +7,12 @@ export const getRankingByFighterId = async ({ id }: { id: number }) => {
 
   return fighter;
 };
+
+
+export const getAllRankings = async () => {
+  const res = await fetch(`http://localhost:5000/ufc/v1/ranking`);
+
+  const rankings = (await res.json()) as Ranking[];
+
+  return rankings;
+};

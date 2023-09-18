@@ -2,15 +2,14 @@
 import { getChampFighters } from "../services/fighter";
 import { getRankingByFighterId } from "../services/ranking";
 import Layout from "../layouts/Layout.astro";
+import Event from "../components/Event.astro";
 
 const champFighters = await getChampFighters();
-
-
 ---
 
 <Layout title="Fighters">
   <div class="container">
-    <img src="/assets/ufc_logo.png" />
+    <h3 class="ufcTitle">UFC</h3>
     <h1>CAMPEONES</h1>
     <div class="cardContainer">
       {
@@ -18,11 +17,26 @@ const champFighters = await getChampFighters();
           const ranking = await getRankingByFighterId({ id: fighter.id });
 
           return (
-            <div class="card">
+            <a class="card" href={`/fighter/${fighter.id}`}>
+              {ranking ? (
+                <div class="weightClassContainer">
+                  <p>{ranking.name}</p>
+                  <p>
+                    {ranking.weight} lb [ {(ranking.weight / 2.205).toFixed(2)}{" "}
+                    Kg ]
+                  </p>
+                  <p>
+                    {fighter.height} in [ {(fighter.height / 39.37).toFixed(2)}{" "}
+                    m ]
+                  </p>
+                </div>
+              ) : (
+                "Sin ranking"
+              )}
               {fighter.fighterPhoto ? (
                 <img
                   src={`http://localhost:5000/ufc/v1/uploads/img/${fighter.fighterPhoto}`}
-                  alt="Sin foto"
+                  alt="Foto de pelador"
                 />
               ) : (
                 <img
@@ -30,19 +44,20 @@ const champFighters = await getChampFighters();
                   alt="Sin foto"
                 />
               )}
-              <a href={`/fighter/${fighter.id}`}>
-                <p>
+              <div class="fighterInfoContainer">
+                <p class="nickname">" {fighter.nickname} "</p>
+                <h3>
                   {fighter.name.toLocaleUpperCase() +
                     " " +
                     fighter.surname.toLocaleUpperCase()}
+                </h3>
+                <p>{fighter.record} [W-L-D]</p>
+                <p>
+                  <strong>Última pelea:</strong> aquí ira la ultima pela del
+                  pelador
                 </p>
-              </a>
-              <p>{fighter.record}</p>
-              <p>{fighter.nickname}</p>
-              <p>{fighter.weight}</p>
-              <p>{fighter.height}</p>
-              <p>{ranking ? `Nombre: ${ranking.name}, Peso: ${ranking.weight}` : "Sin ranking"}</p>
-            </div>
+              </div>
+            </a>
           );
         })
       }
@@ -50,19 +65,76 @@ const champFighters = await getChampFighters();
   </div>
   <style>
     img {
-      width: 40px;
-      height: auto;
+      width: auto;
+      height: 180px;
       cursor: pointer;
+      object-fit: cover;
+      object-position: center top; /* Ajusta la posición de la imagen (centro arriba) */
+    }
+
+    .ufcTitle {
+      color: #d20a31;
     }
     h1 {
       font-size: 50px;
-      margin-top: 50px;
     }
     .container {
-      margin-top: 300px;
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+    .cardContainer {
+      width: 100%;
+      overflow-x: hidden; /* Oculta el desbordamiento horizontal */
+    }
+    .card {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding-inline: 100px;
+      transition: 0.5s;
+      transform-origin: center top; /* Establece el punto de transformación en la parte superior */
+      overflow-x: hidden; /* Oculta el desbordamiento horizontal */
+      -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+    }
+    .weightClassContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: gray;
+      min-width: 200px;
+    }
+    .fighterInfoContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 200px;
+    }
+    p,
+    h3 {
+      margin: 5px;
+    }
+    p {
+      font-size: 12px;
+    }
+    .card:hover {
+      transform: scale(1.1);
+      margin-block: 25px;
+      transition: 0.5s;
+    }
+    a {
+      text-decoration: none;
+      color: black;
+    }
+    .nickname {
+      font-size: 12px;
+      color: #d20a31;
+      font-weight: bold;
     }
   </style>
 </Layout>

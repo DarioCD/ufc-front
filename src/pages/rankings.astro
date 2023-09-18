@@ -1,10 +1,138 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
+import { getAllRankings } from "../services/ranking";
 
+import { getFighters } from "../services/fighter";
 
+const rankings = await getAllRankings();
+
+const fighters = await getFighters();
 ---
 
 <Layout title="Rankings">
+  <div class="container">
+    <h1>RANKINGS</h1>
+    <div class="cardContainer">
+      {
+        rankings.map((ranking) => (
+          <div class="card">
+            
+            {fighters
+              .filter((fighter) => fighter.ranking.id === ranking.id)
+              .map((fighter) => (
+                <a href={`/fighter/${fighter.id}`}>
+                  {fighter.rankingNumber === 0 ? (
+                    <div class="champion">
+                      <p class="rankingName">{ranking.name}</p>
+                        <h3>{fighter.name}</h3><h3> {fighter.surname}</h3>
+                        <p class="championText">Champion</p>
+                        </div>
+                      <>
+                      {fighter.fighterPhoto ? (
+                <img
+                  src={`http://localhost:5000/ufc/v1/uploads/img/${fighter.fighterPhoto}`}
+                  alt="Foto de pelador"
+                />
+              ) : (
+                <img
+                  src="http://localhost:5000/ufc/v1/uploads/img/Default.png"
+                  alt="Sin foto"
+                />
+              )}
+                      </>
+                    ) : (
+                      <div class="fighter">
+                        <span style="flex: 1;">
+                          <strong>{fighter.rankingNumber}</strong>
+                        </span>
+                        <span style="flex: 4;">
+                          {fighter.name + " "} {fighter.surname}
+                          </span>
+                        </div>
+                    )}
+                  </a>
+                ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <style>
+      img {
+      width: 288px;
+      height: 180px;
+      margin-bottom:10px
+    }
+    .container{
+      display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
+    }
+    .cardContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+.card{
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 11px;
+  min-width: 50px;
+}
+.champion{
+  display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.fighter{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transition: 0.2s;
+    padding: 10px;
+}
 
+
+.fighter:hover { 
+  transition: 0.2s;
+  border: 1px solid red;
+  box-shadow: 0px 0px 10px 0px rgba(255,0,0,0.75);
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(255,0,0,0.75);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(255,0,0,0.75);
+}
+
+
+a{
+  text-decoration: none;
+  color: black;
+  width: 100%;  
+}
+
+p, h3{
+  margin:2px;
+}
+
+p , span{
+      font-size: 12px;
+    }
+.championText{
+  color: gray;
+  font-weight: bold;
+}
+.rankingName{
+  color: red;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+
+  </style>
 </Layout>

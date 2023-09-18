@@ -16,4 +16,15 @@ if (id) {
 
 <Layout title={fighter.name}>
   <h1>{fighter.name}</h1>
+  {fighter.fighterFullPhoto ? (
+    <img
+      src={`http://localhost:5000/ufc/v1/uploads/img/${fighter.fighterFullPhoto}`}
+      alt="Sin foto"
+    />
+  ) : (
+    <img
+      src="http://localhost:5000/ufc/v1/uploads/img/Default.png"
+      alt="Sin foto"
+    />
+  )}
 </Layout>
