@@ -1,0 +1,230 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getFighters } from "../../services/fighter";
+import { apiUrl } from "../../services/apiConfig";
+
+const fighters = await getFighters();
+---
+
+<Layout title="Pleadores | UFC">
+  <div class="globalContainer">
+    <div class="searchContainer">
+      <p class="nickname" style="font-size: 15px;">
+        {fighters.length + " peleadores"}
+      </p>
+    </div>
+  </div>
+  <div class="containerCards">
+    {
+      fighters.map((fighter) => (
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              {fighter.fighterPhoto ? (
+                <img
+                  src={`${apiUrl}ufc/v1/uploads/img/${fighter.fighterPhoto}`}
+                  alt="Foto de pelador"
+                />
+              ) : (
+                <img
+                  src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
+                  alt="Sin foto"
+                />
+              )}
+              <p class="titleFront">{fighter.name + " " + fighter.surname}</p>
+              <p class="nickname">" {fighter.nickname} "</p>
+              <p>{fighter.ranking.name}</p>
+              <p>{fighter.record + " [W-L-D]"}</p>
+            </div>
+            <div class="flip-card-back">
+              <div class="backText">
+                {fighter.fighterFullPhoto ? (
+                  <img
+                    class="imgBack"
+                    src={`${apiUrl}ufc/v1/uploads/img/${fighter.fighterFullPhoto}`}
+                    alt="Foto de pelador"
+                  />
+                ) : (
+                  <img
+                    class="imgBack"
+                    src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
+                    alt="Sin foto"
+                  />
+                )}
+                <div>
+                  <p class="nickname">" {fighter.nickname} "</p>
+                  <>
+                    <p class="titleBack">{fighter.name}</p>
+                    <p class="titleBack">{fighter.surname}</p>
+                  </>
+                </div>
+              </div>
+              <div class="btnContainer">
+                <div class="btn">
+                  <a href={`/fighter/${fighter.id}`}>
+                    Información del peleador
+                  </a>
+                </div>
+              </div>
+              <div class="redesContainer">
+                <p>Redes sociales</p>
+                <div class="redes">
+                  <img class="redesImg" src="/assets/facebook.png" />
+                  <img class="redesImg" src="/assets/ig.png" />
+                  <img class="redesImg" src="/assets/x.png" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  <style>
+    .globalContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    p {
+      margin: 3px;
+      font-size: 13px;
+    }
+    .searchContainer {
+      border-bottom: 2px solid lightgray;
+      margin-bottom: 20px;
+      width: 90%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+    }
+    .redes {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-right: 20px;
+    }
+    .redesImg {
+      width: auto;
+      height: 20px;
+      margin-inline: 10px;
+      cursor: pointer;
+    }
+    .flip-card {
+      margin: 0px 25px 50px 25px;
+      background-color: transparent;
+      width: 350px;
+      height: 350px;
+      perspective: 1000px;
+    }
+    .titleFront {
+      border-top: 2px solid lightgray;
+      font-size: 1.5em;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 5px;
+    }
+    .btnContainer {
+      padding-bottom: 10px;
+      border-bottom: 2px solid lightgray;
+      margin: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn {
+      padding: 15px;
+      color: white;
+      background: black;
+      width: 60%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .redesContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-inline: 15px;
+      align-items: center;
+    }
+
+    .btn a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      scale: 1.1;
+      transition: 0.2s;
+    }
+    .titleBack {
+      font-size: 1.5em;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 5px;
+    }
+    .nickname {
+      color: #d20a31;
+      font-weight: bold;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 5px;
+    }
+    .imgBack {
+      height: 200px;
+      width: 130px;
+    }
+
+    .flip-card-front {
+      color: black;
+    }
+    .backText {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 10px;
+    }
+
+    .flip-card-back {
+      color: black;
+      transform: rotateY(180deg);
+    }
+    .containerCards {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+  </style>
+</Layout>

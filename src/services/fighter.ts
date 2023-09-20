@@ -15,8 +15,6 @@ export const getChampFighters = async () => {
 
 export const getFighterById = async ({ id }: { id: string }) => {
   const res = await fetch(`${apiUrl}ufc/v1/fighter/${id}`);
-
   const fighter = (await res.json()) as FighterAPI;
-
   return fighter;
 };
