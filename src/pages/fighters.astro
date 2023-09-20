@@ -3,6 +3,7 @@ import { getChampFighters } from "../services/fighter";
 import { getRankingByFighterId } from "../services/ranking";
 import Layout from "../layouts/Layout.astro";
 import Event from "../components/Event.astro";
+import { apiUrl } from "../services/apiConfig";
 
 const champFighters = await getChampFighters();
 ---
@@ -35,12 +36,12 @@ const champFighters = await getChampFighters();
               )}
               {fighter.fighterPhoto ? (
                 <img
-                  src={`http://localhost:5000/ufc/v1/uploads/img/${fighter.fighterPhoto}`}
+                  src={`${apiUrl}ufc/v1/uploads/img/${fighter.fighterPhoto}`}
                   alt="Foto de pelador"
                 />
               ) : (
                 <img
-                  src="http://localhost:5000/ufc/v1/uploads/img/Default.png"
+                  src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
                   alt="Sin foto"
                 />
               )}

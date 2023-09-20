@@ -1,9 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
 import { getAllRankings } from "../services/ranking";
-
 import { getFighters } from "../services/fighter";
+import { apiUrl } from "../services/apiConfig";
 
 const rankings = await getAllRankings();
 
@@ -31,12 +30,12 @@ const fighters = await getFighters();
                       <>
                       {fighter.fighterPhoto ? (
                 <img
-                  src={`http://localhost:5000/ufc/v1/uploads/img/${fighter.fighterPhoto}`}
+                  src={`${apiUrl}ufc/v1/uploads/img/${fighter.fighterPhoto}`}
                   alt="Foto de pelador"
                 />
               ) : (
                 <img
-                  src="http://localhost:5000/ufc/v1/uploads/img/Default.png"
+                  src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
                   alt="Sin foto"
                 />
               )}

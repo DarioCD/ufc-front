@@ -1,30 +1,98 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getFighterById } from "../../services/fighter";
+import { getFighters } from "../../services/fighter";
 import { type FighterAPI } from "../../types/fighter-api";
+import { apiUrl } from "../../services/apiConfig";
 
 const { id } = Astro.params;
 
-export const prerender = false;
-
-let fighter;
+let fighter = {} as FighterAPI;
 
 if (id) {
   fighter = await getFighterById({ id });
 }
+export async function getStaticPaths() {
+  const fighters = await getFighters();
+
+  return fighters.map((fighter) => ({
+    params: {
+      id: fighter.id,
+    },
+  }));
+}
 ---
 
-<Layout title={fighter.name}>
-  <h1>{fighter.name}</h1>
-  {fighter.fighterFullPhoto ? (
-    <img
-      src={`http://localhost:5000/ufc/v1/uploads/img/${fighter.fighterFullPhoto}`}
-      alt="Sin foto"
-    />
-  ) : (
-    <img
-      src="http://localhost:5000/ufc/v1/uploads/img/Default.png"
-      alt="Sin foto"
-    />
-  )}
+<Layout title={fighter.name + fighter.surname + " | UFC"}>
+  <div class="container">
+    <div class="fighterInfo">
+      <p>{fighter.ranking.name}</p>
+      <p>{fighter.nickname}</p>
+      <h1>{fighter.name}</h1>
+      <h1>{fighter.surname}</h1>
+      <p>{fighter.record + " [W-L-D]"}</p>
+      {
+        fighter.fights.map((fight) => {
+          return(
+            <div class="fightStatsContainer">
+              <div>
+                <p>{fighter.fights.filter((fight) => fight.mehtod === "KO").length}</p>
+                <p>Victorias por</p><p>KO</p>
+                </div>
+                <div>
+                  <p>{fighter.fights.filter((fight) => fight.mehtod === "SUB").length}</p>
+                  <p>Victorias por</p><p>SUB</p>
+                  </div>
+                  <div>
+                    <p>{fighter.fights.filter((fight) => fight.round === "1").length}</p>
+                    <p>Victorias en </p>
+                      <p>el primer aslato</p>
+                    </div>
+              </div>
+          )
+        })
+      }
+    </div>
+    <div>
+    {
+      fighter.fighterFullPhoto ? (
+        <img
+          src={`${apiUrl}ufc/v1/uploads/img/${fighter.fighterFullPhoto}`}
+          alt="Sin foto"
+        />
+      ) : (
+        <img src={`${apiUrl}ufc/v1/uploads/img/Default.png`} alt="Sin foto" />
+      )
+    }
+    </div>
+  </div>
+  <style>
+    .container{
+      display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    }
+    img{
+      height: 500px;
+      width: auto;
+    }
+    .fightStatsContainer{
+      display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    }
+    .fightStatsContainer div{
+      margin-inline: 10px;
+      display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 130px;
+    padding-inline: 10px;
+    border-inline: 1px solid black;
+    }
+  </style>
+
 </Layout>
