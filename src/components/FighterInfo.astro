@@ -1,0 +1,190 @@
+---
+const { fighterProp } = Astro.props;
+import { apiUrl } from "../services/apiConfig";
+import { type FighterAPI } from "../types/fighter-api";
+
+let fighter = fighterProp as FighterAPI;
+
+
+---
+<div class="container">
+  <div class="fighterInfo">
+    <div class="etiquetas">
+      {
+        fighter.rankingNumber === 0 ? (
+          <p>CAMPEÓN</p>
+        ) : (
+          <p>{"#" + fighter.rankingNumber + " " + fighter.ranking.name}</p>
+        )
+      }
+      <p>ACTIVO</p>
+    </div>
+    <p style="color: #d20a31;">" {fighter.nickname} "</p>
+    <h1>{fighter.name}</h1>
+    <h1>{fighter.surname}</h1>
+    <p>{fighter.ranking.name}</p>
+    <p>{fighter.record + " [W-L-D]"}</p>
+    {
+      fighter.fights.length === 0 ? (
+        <div class="fightStatsContainer">
+          <div class="fightStatsText">
+            <p class="number">
+              {fighter.fights.filter((fight) => fight.mehtod === "KO").length}
+            </p>
+            <>
+              <p>VICTORIAS POR</p>
+              <p style="color: #d20a31;">
+                <strong>KO</strong>
+              </p>
+            </>
+          </div>
+          <div class="fightStatsText">
+            <p class="number">
+              {
+                fighter.fights.filter((fight) => fight.mehtod === "SUB")
+                  .length
+              }
+            </p>
+            <>
+              <p>VICTORIAS POR</p>
+              <p style="color: #d20a31;">
+                <strong>SUB</strong>
+              </p>
+            </>
+          </div>
+          <div class="fightStatsText">
+            <p class="number">
+              {fighter.fights.filter((fight) => fight.round === "1").length}
+            </p>
+            <p>VICTORIAS EN EL</p>
+            <p>
+              <strong style="color: #d20a31;">PRIMER ASALTO</strong>
+            </p>
+          </div>
+        </div>
+      ) : (
+        fighter.fights.map((fight) => {
+          return (
+            <div class="fightStatsContainer">
+              <div class="fightStatsText">
+                <p class="number">
+                  {
+                    fighter.fights.filter((fight) => fight.mehtod === "KO")
+                      .length
+                  }
+                </p>
+                <>
+                  <p>VICTORIAS POR</p>
+                  <p style="color: #d20a31;">
+                    <strong>KO</strong>
+                  </p>
+                </>
+              </div>
+              <div class="fightStatsText">
+                <p class="number">
+                  {
+                    fighter.fights.filter((fight) => fight.mehtod === "SUB")
+                      .length
+                  }
+                </p>
+                  <p>VICTORIAS POR</p>
+                  <p style="color: #d20a31;">
+                    <strong>SUB</strong>
+                  </p>
+                </hr>
+              </div>
+              <div class="fightStatsText">
+                <p class="number">
+                  {
+                    fighter.fights.filter((fight) => fight.round === "1")
+                      .length
+                  }
+                </p>
+                <p>VICTORIAS EN EL</p>
+                <p>
+                  <strong style="color: #d20a31;">PRIMER ASALTO</strong>
+                </p>
+              </div>
+            </div>
+          );
+        })
+      )
+    }
+  </div>
+  <div>
+    {
+      fighter.fighterFullPhoto ? (
+        <img
+          src={`${apiUrl}ufc/v1/uploads/img/${fighter.fighterFullPhoto}`}
+          alt="Sin foto"
+        />
+      ) : (
+        <img
+          src={`${apiUrl}ufc/v1/uploads/img/THE_CANNIBAL_Pantoja_photo_body.png`}
+          alt="Sin foto"
+        />
+      )
+    }
+  </div>
+</div>
+</div>
+<style>
+
+.container {
+  padding-top: 40px;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+background-color: #19191e;
+color: white;
+padding-inline: 150px;
+}
+img {
+  height: 500px;
+  width: auto;
+}
+.fightStatsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.fightStatsContainer div {
+  margin-inline: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 130px;
+  padding-inline: 10px;
+}
+.fightStatsContainer div:nth-child(2) {
+  border-inline: 3px solid gray;
+}
+.fightStatsContainer p {
+  margin: 7px;
+}
+.number {
+  font-size: 50px;
+  font-weight: bold;
+}
+.fightStatsText p:nth-child(2){
+  padding-top:10px;
+  border-top: 1px solid #d20a31;
+}
+.etiquetas {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.etiquetas p {
+  margin-inline:5px;
+  background-color: gray;
+  border-radius: 5px;
+  padding: 7px;
+  font-size: 9px;
+}
+</style>

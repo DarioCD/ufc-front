@@ -37,7 +37,7 @@ const { title } = Astro.props;
   </head>
   <body>
     <Header />
-    <div class="top">
+    <div>
       <slot />
     </div>
     <style is:global>
@@ -52,9 +52,6 @@ const { title } = Astro.props;
       }
       body {
         margin: 0px;
-      }
-      .top {
-        margin-top: 10vh;
       }
     </style>
   </body>

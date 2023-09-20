@@ -17,8 +17,8 @@ export type FighterAPI = {
   gym:              null;
   fightStyle:       null;
   rankingNumber:    number;
-  fighterPhoto:     null | string;
-  fighterFullPhoto: null | string;
+  fighterPhoto:     string;
+  fighterFullPhoto: null;
   fights:           Fight[];
   ranking:          Ranking;
 }
@@ -26,26 +26,25 @@ export type FighterAPI = {
 export type Fight = {
   id:      number;
   title:   string;
-  result:  null;
-  mehtod:  null;
-  round:   null;
-  time:    null;
+  result:  string;
+  mehtod:  string;
+  round:   string;
+  time:    string;
   company: string;
+  event:   Event;
+}
+
+export type Event = {
+  id:          number;
+  eventNumber: string;
+  title:       string;
+  fightDate:   Date;
+  place:       string;
+  information: string;
 }
 
 export type Ranking = {
   id:     number;
-  name:   Name;
+  name:   string;
   weight: string;
-}
-
-export enum Name {
-  Bantamweight = "Bantamweight",
-  Featherweight = "Featherweight",
-  Flyweight = "Flyweight ",
-  Heavyweight = "Heavyweight",
-  LightHeavyweight = "Light heavyweight",
-  Lightweight = "Lightweight",
-  Middleweight = "Middleweight",
-  Welterweight = "Welterweight",
 }

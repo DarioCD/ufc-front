@@ -3,7 +3,8 @@ import Layout from "../../layouts/Layout.astro";
 import { getFighterById } from "../../services/fighter";
 import { getFighters } from "../../services/fighter";
 import { type FighterAPI } from "../../types/fighter-api";
-import { apiUrl } from "../../services/apiConfig";
+import FighterInfo from "../../components/FighterInfo.astro";
+import FightFighter from "../../components/FightFighter.astro";
 
 const { id } = Astro.params;
 
@@ -24,79 +25,15 @@ export async function getStaticPaths() {
 ---
 
 <Layout title={fighter.name + fighter.surname + " | UFC"}>
-  <div class="container">
-    <div class="fighterInfo">
-      <p>{fighter.ranking.name}</p>
-      <p>{fighter.nickname}</p>
-      <h1>{fighter.name}</h1>
-      <h1>{fighter.surname}</h1>
-      <p>{fighter.record + " [W-L-D]"}</p>
-      {
-        fighter.fights.map((fight) => {
-          return(
-            <div class="fightStatsContainer">
-              <div>
-                <p>{fighter.fights.filter((fight) => fight.mehtod === "KO").length}</p>
-                <p>Victorias por</p><p>KO</p>
-                </div>
-                <div>
-                  <p>{fighter.fights.filter((fight) => fight.mehtod === "SUB").length}</p>
-                  <p>Victorias por</p><p>SUB</p>
-                  </div>
-                  <div>
-                    <p>{fighter.fights.filter((fight) => fight.round === "1").length}</p>
-                    <p>Victorias en </p>
-                      <p>el primer aslato</p>
-                    </div>
-              </div>
-          )
-        })
-      }
-    </div>
-    <div>
-    {
-      fighter.fighterFullPhoto ? (
-        <img
-          src={`${apiUrl}ufc/v1/uploads/img/${fighter.fighterFullPhoto}`}
-          alt="Sin foto"
-        />
-      ) : (
-        <img src={`${apiUrl}ufc/v1/uploads/img/Default.png`} alt="Sin foto" />
-      )
-    }
-    </div>
-  </div>
+  <div class="containerGlobal">
+    <FighterInfo fighterProp={fighter}/>
+    <FightFighter fighterProp={fighter}/>
   <style>
-    .container{
-      display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    background-color: #19191e;
-    color: white;
-    }
-    img{
-      height: 500px;
-      width: auto;
-    }
-    .fightStatsContainer{
-      display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    }
-    .fightStatsContainer div{
-      margin-inline: 10px;
+    .containerGlobal {
       display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    min-width: 130px;
-    padding-inline: 10px;
-    }
-    .fightStatsContainer div:nth-child(2) {
-      border-inline: 3px solid gray;
+    color: white;
     }
   </style>
-
 </Layout>

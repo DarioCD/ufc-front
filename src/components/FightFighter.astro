@@ -1,0 +1,35 @@
+---
+import { type FighterAPI } from "../types/fighter-api";
+const { fighterProp } = Astro.props;
+import { apiUrl } from "../services/apiConfig";
+import { getFightById } from "../services/fight";
+
+let fighter = fighterProp as FighterAPI;
+
+const fightApi = await getFightById({id : fighter.id.toString()});
+
+console.log(fightApi.fighters.length);
+
+
+---
+
+<div class="container">
+  <h1>PELEAS DENTRO DE LA COMPAÑÍA</h1>
+  {
+    fighter.fights.map((fight) => {
+      return(
+        <p>{fight.title}</p>
+        <p>Fecha {fight.event.fightDate}</p>
+        <p>Round{fight.round}</p>
+        <p>Tiempo{fight.time}</p>
+        <p>Método{fight.mehtod}</p>
+      )
+    })
+  }
+</div>
+<style>
+.container{
+  color: black;
+  padding-inline: 150px;
+}
+</style>
