@@ -5,8 +5,8 @@ export type FightAPI = {
   mehtod:   null;
   round:    null;
   time:     null;
-  fighter1: null;
-  fighter2: null;
+  winner: number;
+  looser: number;
   company:  string;
   fighters: Fighter[];
   event:    Event;

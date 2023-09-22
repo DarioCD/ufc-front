@@ -24,14 +24,17 @@ export type FighterAPI = {
 }
 
 export type Fight = {
-  id:      number;
-  title:   string;
-  result:  string;
-  mehtod:  string;
-  round:   string;
-  time:    string;
-  company: string;
-  event:   Event;
+  id:       number;
+  title:    string;
+  result:   null;
+  mehtod:   null;
+  round:    null;
+  time:     null;
+  winner: number;
+  looser: number;
+  company:  string;
+  fighters: Fighter[];
+  event:    Event;
 }
 
 export type Event = {

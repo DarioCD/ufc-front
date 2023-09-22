@@ -8,7 +8,7 @@ let fighter = fighterProp as FighterAPI;
 
 const fightApi = await getFightById({id : fighter.id.toString()});
 
-console.log(fightApi.fighters.length);
+let counter = 0;
 
 
 ---
@@ -17,12 +17,24 @@ console.log(fightApi.fighters.length);
   <h1>PELEAS DENTRO DE LA COMPAÑÍA</h1>
   {
     fighter.fights.map((fight) => {
+      let fighter1 = fightApi[counter].fighters[0] as FighterAPI;
+      let fighter2 = fightApi[counter].fighters[1] as FighterAPI;
+      console.log(fight.winner);
+          console.log(fighter1.id);
+      counter = counter + 1;
       return(
         <p>{fight.title}</p>
         <p>Fecha {fight.event.fightDate}</p>
         <p>Round{fight.round}</p>
         <p>Tiempo{fight.time}</p>
         <p>Método{fight.mehtod}</p>
+        <p>Peleador 1 : {fighter1.name}</p>
+        <p>Peleador 2 : {fighter2.name}</p>
+        <>
+        {
+          fight.winner === fighter.id ? <p>Win</p> : <p>Lost</p>
+        }
+        </>
       )
     })
   }

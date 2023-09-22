@@ -63,13 +63,11 @@ let fighter = fighterProp as FighterAPI;
           </div>
         </div>
       ) : (
-        fighter.fights.map((fight) => {
-          return (
             <div class="fightStatsContainer">
               <div class="fightStatsText">
                 <p class="number">
                   {
-                    fighter.fights.filter((fight) => fight.mehtod === "KO")
+                    fighter.fights.filter((fight) => fight.mehtod === "KO" && fight.winner === fighter.id)
                       .length
                   }
                 </p>
@@ -83,7 +81,7 @@ let fighter = fighterProp as FighterAPI;
               <div class="fightStatsText">
                 <p class="number">
                   {
-                    fighter.fights.filter((fight) => fight.mehtod === "SUB")
+                    fighter.fights.filter((fight) => fight.mehtod === "SUB" && fight.winner === fighter.id)
                       .length
                   }
                 </p>
@@ -96,7 +94,7 @@ let fighter = fighterProp as FighterAPI;
               <div class="fightStatsText">
                 <p class="number">
                   {
-                    fighter.fights.filter((fight) => fight.round === "1")
+                    fighter.fights.filter((fight) => fight.round === "1" && fight.winner === fighter.id)
                       .length
                   }
                 </p>
@@ -106,8 +104,6 @@ let fighter = fighterProp as FighterAPI;
                 </p>
               </div>
             </div>
-          );
-        })
       )
     }
   </div>
