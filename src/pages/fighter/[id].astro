@@ -5,6 +5,7 @@ import { getFighters } from "../../services/fighter";
 import { type FighterAPI } from "../../types/fighter-api";
 import FighterInfo from "../../components/FighterInfo.astro";
 import FightFighter from "../../components/FightFighter.astro";
+import FighterStats from "../../components/FighterStats.astro";
 
 const { id } = Astro.params;
 
@@ -28,6 +29,7 @@ export async function getStaticPaths() {
   <div class="containerGlobal">
     <FighterInfo fighterProp={fighter}/>
     <FightFighter fighterProp={fighter}/>
+    <FighterStats fighterProp={fighter}/>
   <style>
     .containerGlobal {
       display: flex;

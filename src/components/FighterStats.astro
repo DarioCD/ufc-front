@@ -1,0 +1,23 @@
+---
+const { fighterProp } = Astro.props;
+import { apiUrl } from "../services/apiConfig";
+import { type FighterAPI } from "../types/fighter-api";
+
+let fighter = fighterProp as FighterAPI;
+---
+
+<div class="container">
+  <h1>Hola</h1>
+</div>
+<style>
+  .container {
+    padding-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #19191e;
+    color: white;
+    padding-inline: 150px;
+  }
+</style>

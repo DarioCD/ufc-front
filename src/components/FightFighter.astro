@@ -6,42 +6,172 @@ import { getFightById } from "../services/fight";
 
 let fighter = fighterProp as FighterAPI;
 
-const fightApi = await getFightById({id : fighter.id.toString()});
+const fightApi = await getFightById({ id: fighter.id.toString() });
+
+function formatarFecha(fecha) {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const fechaDate = new Date(fecha);
+  return fechaDate.toLocaleDateString("es-ES", options);
+}
 
 let counter = 0;
-
-
 ---
 
 <div class="container">
   <h1>PELEAS DENTRO DE LA COMPAÑÍA</h1>
   {
     fighter.fights.map((fight) => {
+      let fighterName1 =
+        fightApi[counter].fighters[0].name +
+        " " +
+        fightApi[counter].fighters[0].surname;
+      let fighterName2 =
+        fightApi[counter].fighters[1].name +
+        " " +
+        fightApi[counter].fighters[1].surname;
       let fighter1 = fightApi[counter].fighters[0] as FighterAPI;
       let fighter2 = fightApi[counter].fighters[1] as FighterAPI;
-      console.log(fight.winner);
-          console.log(fighter1.id);
+      if (fighter1.id != fight.winner) {
+        fighter1 = fightApi[counter].fighters[1] as FighterAPI;
+        fighter2 = fightApi[counter].fighters[0] as FighterAPI;
+        fighterName1 =
+          fightApi[counter].fighters[1].name +
+          " " +
+          fightApi[counter].fighters[1].surname;
+        fighterName2 =
+          fightApi[counter].fighters[0].name +
+          " " +
+          fightApi[counter].fighters[0].surname;
+      }
+
       counter = counter + 1;
-      return(
-        <p>{fight.title}</p>
-        <p>Fecha {fight.event.fightDate}</p>
-        <p>Round{fight.round}</p>
-        <p>Tiempo{fight.time}</p>
-        <p>Método{fight.mehtod}</p>
-        <p>Peleador 1 : {fighter1.name}</p>
-        <p>Peleador 2 : {fighter2.name}</p>
-        <>
-        {
-          fight.winner === fighter.id ? <p>Win</p> : <p>Lost</p>
-        }
-        </>
-      )
+      return (
+        <div class="infoContainer">
+          <div class="imgContainer">
+            <div>
+              <img
+                src={`${apiUrl}ufc/v1/uploads/img/${fighter1.fighterPhoto}`}
+                alt="Foto de pelador"
+              />
+              {fight.winner === fighter1.id && <p>WIN</p>}
+            </div>
+            <div>
+              <img
+                class="imgSecond"
+                src={`${apiUrl}ufc/v1/uploads/img/${fighter2.fighterPhoto}`}
+                alt="Foto de pelador"
+              />
+              {fight.winner === fighter2.id && <p>Win</p>}
+            </div>
+          </div>
+          <div class="resultContainer">
+            <h3>
+              <a href={`/fighter/${fighter1.id}`}>
+                {fighterName1.toUpperCase()}
+              </a>
+              VS
+              <a href={`/fighter/${fighter2.id}`}>
+                {fighterName2.toUpperCase()}
+              </a>
+            </h3>
+            <span>{formatarFecha(fight.event.fightDate)}</span>
+            <div class="resultInfoContainer">
+              <div>
+                <p>ROUND</p>
+                <p>{fight.round}</p>
+              </div>
+              <div>
+                <p>TIEMPO</p>
+                <p>{fight.time}</p>
+              </div>
+              <div>
+                <p>MÉTODO</p>
+                <p>{fight.mehtod}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     })
   }
 </div>
 <style>
-.container{
-  color: black;
-  padding-inline: 150px;
-}
+  .container {
+    color: black;
+    padding-inline: 150px;
+  }
+  a {
+    padding-block: 5px;
+    text-decoration: none;
+    color: black;
+    position: relative;
+  }
+
+  a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent 50%, #d20a31 50%);
+    background-size: 200% 100%;
+    transition: background-position 0.5s;
+  }
+
+  a:hover::before {
+    background-position: -100% 0;
+  }
+  .infoContainer {
+    display: flex;
+    margin-bottom: 20px;
+    transform-origin: center top; /* Establece el punto de transformación en la parte superior */
+    overflow-x: hidden; /* Oculta el desbordamiento horizontal */
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+  }
+  .imgContainer {
+    min-width: 500px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .imgContainer img {
+    width: auto;
+    height: 200px;
+  }
+
+  .imgSecond {
+    z-index: -2;
+    margin-left: -120px;
+  }
+  .imgContainer div {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+  }
+  .imgContainer p {
+    margin-top: -20px;
+    padding: 5px;
+    width: 25%;
+    display: flex;
+    background-color: #d20a31;
+    justify-content: center;
+    font-weight: bold;
+  }
+  .resultContainer {
+    margin-left: 50px;
+  }
+
+  .resultInfoContainer {
+    margin-top: 20px;
+    border-top: 1px solid grey;
+    display: flex;
+    justify-content: space-between;
+  }
+  .resultInfoContainer p:nth-child(1) {
+    font-weight: bold;
+  }
 </style>
