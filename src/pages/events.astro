@@ -1,18 +1,20 @@
 ---
 import Countdown from "../components/Counter";
+import { apiUrl } from "../services/apiConfig";
 import Layout from "../layouts/Layout.astro";
 import { getAllEvents, getFightByEventId } from "../services/event";
+import type { FighterAPI } from "../types/fighter-api";
 
 const events = await getAllEvents();
 const currentDate = new Date();
+
+let counter = 0;
 ---
 
 <Layout title="Events">
   {
     events.map(async (event) => {
       const fights = await getFightByEventId({ id: event.id });
-      console.log(fights);
-
       const eventDate = new Date(event.fightDate);
       if (eventDate < currentDate) {
         return (
@@ -22,25 +24,76 @@ const currentDate = new Date();
           </div>
         );
       } else {
-        console.log(event.id);
-
         return (
-          <div>
-            <h2>{event.title}</h2>
-            <span>Tiempo para el evento</span>
-            <Countdown targetDate={event.fightDate} client:visible />
-            {fights.map((fight) => {
-              return (
-                <div>
-                  <p>Pelea con id : {fight.id}</p>
-                  <p>{fight.title}</p>
-                  <p>{fight.fihter}</p>
-                </div>
-              );
-            })}
+          <div class="container">
+            <div>
+              {fights.map((fight, index) => {
+                if (index == 0) {
+                  let fighter1 = fight.fighters[0] as FighterAPI;
+                  let fighter2 = fight.fighters[1] as FighterAPI;
+
+                  if (fighter1.id != fight.winner) {
+                    fighter1 = fight.fighters[1];
+                    fighter2 = fight.fighters[0];
+                  }
+                  return (
+                    <div class="fighterContainer">
+                      <p>{fight.title}</p>
+                      <div class="imgContainer">
+                        {fighter1.fighterPhoto == null ? (
+                          <img
+                            src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
+                          />
+                        ) : (
+                          <img
+                            src={`${apiUrl}ufc/v1/uploads/img/${fighter1.fighterPhoto}`}
+                          />
+                        )}
+                        {fighter2.fighterPhoto == null ? (
+                          <img
+                            src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
+                          />
+                        ) : (
+                          <img
+                            src={`${apiUrl}ufc/v1/uploads/img/${fighter2.fighterPhoto}`}
+                          />
+                        )}
+                      </div>
+                      <p>
+                        {fighter1.name} vs {fighter2.name}
+                      </p>
+                    </div>
+                  );
+                }
+              })}
+            </div>
+            <div>
+              <h2>{event.title}</h2>
+              <span>Tiempo para el evento</span>
+              <Countdown targetDate={event.fightDate} client:visible />
+            </div>
           </div>
         );
       }
     })
   }
+  <style>
+    .container {
+      display: flex;
+    }
+    .imgContainer {
+      display: flex;
+    }
+
+    .imgContainer img {
+      width: 100px;
+      height: auto;
+    }
+    .fighterContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 </Layout>

@@ -8,7 +8,7 @@ export type FightAPI = {
   winner: number;
   looser: number;
   company:  string;
-  fighters: Fighter[];
+  fighters: Fighter[] | number;
   event:    Event;
 }
 

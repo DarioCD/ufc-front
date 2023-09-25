@@ -8,7 +8,7 @@ let fighter = fighterProp as FighterAPI;
 
 const fightApi = await getFightById({ id: fighter.id.toString() });
 
-function formatarFecha(fecha) {
+function formatarFecha(fecha : Date) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   const fechaDate = new Date(fecha);
   return fechaDate.toLocaleDateString("es-ES", options);
@@ -16,7 +16,6 @@ function formatarFecha(fecha) {
 
 let counter = 0;
 ---
-
 <div class="container">
   <h1>PELEAS DENTRO DE LA COMPAÑÍA</h1>
   {
@@ -51,7 +50,7 @@ let counter = 0;
             <div>
               <img
                 src={`${apiUrl}ufc/v1/uploads/img/${fighter1.fighterPhoto}`}
-                alt="Foto de pelador"
+                alt="Foto de peleador"
               />
               {fight.winner === fighter1.id && <p>WIN</p>}
             </div>
@@ -59,9 +58,9 @@ let counter = 0;
               <img
                 class="imgSecond"
                 src={`${apiUrl}ufc/v1/uploads/img/${fighter2.fighterPhoto}`}
-                alt="Foto de pelador"
+                alt="Foto de peleador"
               />
-              {fight.winner === fighter2.id && <p>Win</p>}
+              {fight.winner === fighter2.id && <p>WIN</p>}
             </div>
           </div>
           <div class="resultContainer">
