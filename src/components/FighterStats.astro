@@ -4,20 +4,116 @@ import { apiUrl } from "../services/apiConfig";
 import { type FighterAPI } from "../types/fighter-api";
 
 let fighter = fighterProp as FighterAPI;
+
+function formatarFecha(fecha) {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const fechaDate = new Date(fecha);
+  return fechaDate.toLocaleDateString("es-ES", options);
+}
 ---
 
 <div class="container">
-  <h1>Hola</h1>
+  <h1>INFORMACIÓN</h1>
+  <div class="statsContainer">
+    <div>
+      <p>ESTADO</p>
+      <h3>ACTIVO</h3>
+    </div>
+    <div>
+      <p>CIUDAD NATAL</p>
+      <h3>{fighter.nationality}</h3>
+    </div>
+    <div class="gymContainer">
+      <div>
+        <p>GIMNASIO</p>
+        <h3>{fighter.gym}</h3>
+      </div>
+      <div>
+        <p>ESTILO DE LUCHA</p>
+        <h3>{fighter.fightStyle}</h3>
+      </div>
+    </div>
+    <div class="personlasInfoContainer">
+      <div>
+        <p>NOMBRE</p>
+        <h3>{fighter.name}</h3>
+      </div>
+      <div>
+        <p>APELLIDO</p>
+        <h3>{fighter.surname}</h3>
+      </div>
+      <div>
+        <p>FECHA DE NACIMIENTO</p>
+        <h3>{formatarFecha(fighter.dateOfBirth)}</h3>
+      </div>
+      <div>
+        <p>EDAD</p>
+        <h3>{fighter.age}</h3>
+      </div>
+    </div>
+    <div class="bodyContainer">
+      <div>
+        <p>ALTURA</p>
+        <h3>{fighter.height} in [ {(fighter.height / 39.37).toFixed(2) } m ]</h3>
+      </div>
+      <div>
+        <p>PESO</p>
+        <h3>{fighter.weight} lb [ {(fighter.weight /2.205).toFixed(2)} Kg ]</h3>
+      </div>
+      <div>
+        <p>ALACANCE</p>
+        <h3>{fighter.reach} in [ {(fighter.reach / 39.37).toFixed(2) } m ]</h3>
+      </div>
+      <div>
+        <p>ALCANCE DE PIERNA</p>
+        <h3>{fighter.legReach} in [ {(fighter.legReach / 39.37).toFixed(2) } m ]</h3>
+      </div>
+    </div>
+  </div>
 </div>
 <style>
   .container {
     padding-top: 40px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     background-color: #19191e;
     color: white;
     padding-inline: 150px;
+  }
+
+  .statsContainer > div {
+    border-bottom: 1px solid #d20a31;
+    padding-block: 10px;
+  }
+  .statsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .gymContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .personlasInfoContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .bodyContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  h1{
+    color: #d20a31;
   }
 </style>
