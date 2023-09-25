@@ -68,7 +68,7 @@ const champFighters = await getChampFighters();
         <a href="/rankings"> Rankings</a>
       </div>
       <div class="btn t">
-        <a href="/allFighters">Todos los peleadores</a>
+        <a href="/fighters/all">Todos los peleadores</a>
       </div>
     </div>
   </div>
@@ -134,6 +134,16 @@ const champFighters = await getChampFighters();
     .card:hover {
       transform: scale(1.1);
       margin-block: 25px;
+      transition: 0.5s;
+    }
+
+    .card:hover h3 {
+      color: #d20a31;
+      transition: 0.5s;
+    }
+
+    .card:hover p {
+      color: black ;
       transition: 0.5s;
     }
     a {

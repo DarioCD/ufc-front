@@ -1,0 +1,46 @@
+---
+import Countdown from "../components/Counter";
+import Layout from "../layouts/Layout.astro";
+import { getAllEvents, getFightByEventId } from "../services/event";
+
+const events = await getAllEvents();
+const currentDate = new Date();
+---
+
+<Layout title="Events">
+  {
+    events.map(async (event) => {
+      const fights = await getFightByEventId({ id: event.id });
+      console.log(fights);
+
+      const eventDate = new Date(event.fightDate);
+      if (eventDate < currentDate) {
+        return (
+          <div>
+            <h2>{event.title}</h2>
+            <p>Este evento ya ocurrió</p>
+          </div>
+        );
+      } else {
+        console.log(event.id);
+
+        return (
+          <div>
+            <h2>{event.title}</h2>
+            <span>Tiempo para el evento</span>
+            <Countdown targetDate={event.fightDate} client:visible />
+            {fights.map((fight) => {
+              return (
+                <div>
+                  <p>Pelea con id : {fight.id}</p>
+                  <p>{fight.title}</p>
+                  <p>{fight.fihter}</p>
+                </div>
+              );
+            })}
+          </div>
+        );
+      }
+    })
+  }
+</Layout>
