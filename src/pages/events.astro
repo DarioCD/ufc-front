@@ -4,14 +4,13 @@ import { apiUrl } from "../services/apiConfig";
 import Layout from "../layouts/Layout.astro";
 import { getAllEvents, getFightByEventId } from "../services/event";
 import type { FighterAPI } from "../types/fighter-api";
+import formatDate from "../components/FormatDate";
 
 const events = await getAllEvents();
 const currentDate = new Date();
-
-let counter = 0;
 ---
 
-<Layout title="Events">
+<Layout title="Events | UFC">
   {
     events.map(async (event) => {
       const fights = await getFightByEventId({ id: event.id });
@@ -26,51 +25,65 @@ let counter = 0;
       } else {
         return (
           <div class="container">
-            <div>
-              {fights.map((fight, index) => {
-                if (index == 0) {
-                  let fighter1 = fight.fighters[0] as FighterAPI;
-                  let fighter2 = fight.fighters[1] as FighterAPI;
+            <div class="containerEvent">
+              <div class="eventNumber">
+                <a href={`/event/${event.id}`}>
+                  <h3>{event.eventNumber}</h3>
+                </a>
+              </div>
+              <div>
+                {fights.map((fight, index) => {
+                  // QUITAR ESTO, ES SOLO DE PRUEBA
+                  if (index == 0) {
+                    let fighter1 = fight.fighters[0] as FighterAPI;
+                    let fighter2 = fight.fighters[1] as FighterAPI;
 
-                  if (fighter1.id != fight.winner) {
-                    fighter1 = fight.fighters[1];
-                    fighter2 = fight.fighters[0];
-                  }
-                  return (
-                    <div class="fighterContainer">
-                      <p>{fight.title}</p>
-                      <div class="imgContainer">
-                        {fighter1.fighterPhoto == null ? (
-                          <img
-                            src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
-                          />
-                        ) : (
-                          <img
-                            src={`${apiUrl}ufc/v1/uploads/img/${fighter1.fighterPhoto}`}
-                          />
-                        )}
-                        {fighter2.fighterPhoto == null ? (
-                          <img
-                            src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
-                          />
-                        ) : (
-                          <img
-                            src={`${apiUrl}ufc/v1/uploads/img/${fighter2.fighterPhoto}`}
-                          />
-                        )}
+                    if (fighter1.id != fight.winner) {
+                      fighter1 = fight.fighters[1];
+                      fighter2 = fight.fighters[0];
+                    }
+                    return (
+                      <div class="fighterContainer">
+                        <div class="imgContainer">
+                          {fighter1.fighterPhoto == null ? (
+                            <img
+                              src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
+                            />
+                          ) : (
+                            <img
+                              src={`${apiUrl}ufc/v1/uploads/img/${fighter1.fighterPhoto}`}
+                            />
+                          )}
+                          {fighter2.fighterPhoto == null ? (
+                            <img
+                              src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
+                            />
+                          ) : (
+                            <img
+                              src={`${apiUrl}ufc/v1/uploads/img/${fighter2.fighterPhoto}`}
+                            />
+                          )}
+                        </div>
                       </div>
-                      <p>
-                        {fighter1.name} vs {fighter2.name}
-                      </p>
-                    </div>
-                  );
-                }
-              })}
-            </div>
-            <div>
-              <h2>{event.title}</h2>
-              <span>Tiempo para el evento</span>
-              <Countdown targetDate={event.fightDate} client:visible />
+                    );
+                  }
+                })}
+              </div>
+              <div class="infoEventContainer">
+                <h2>{event.title}</h2>
+                <div class="fightDate">
+                  <p>
+                    {formatDate(event.fightDate)}
+                    </p>
+                    <Countdown targetDate={event.fightDate} client:visible />
+                </div>
+                <p>{event.place}</p>
+              </div>
+              <div class="eventNumber">
+                <a href={`/event/${event.id}`}>
+                  <p>Cartelera completa</p>
+                </a>
+              </div>
             </div>
           </div>
         );
@@ -80,20 +93,79 @@ let counter = 0;
   <style>
     .container {
       display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
+    .containerEvent {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+      align-items: center;
+      transition: 0.5s;
+      transform-origin: center top; /* Establece el punto de transformación en la parte superior */
+      overflow-x: hidden; /* Oculta el desbordamiento horizontal */
+      -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+    }
+    .containerEvent:hover {
+      transform: scale(1.1);
+      margin-block: 25px;
+      transition: 0.5s;
+    }
+
+    .containerEvent:hover .eventNumber {
+      transition: 0.5s;
+    }
+
     .imgContainer {
       display: flex;
     }
 
     .imgContainer img {
-      width: 100px;
-      height: auto;
+      width: auto;
+      height: 180px;
     }
     .fighterContainer {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+    }
+    .infoEventContainer {
+    }
+
+    .eventNumber {
+      min-width: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .eventNumber p,
+    h3 {
+      cursor: pointer;
+      color: white;
+      background-color: black;
+      padding: 20px;
+      border: 1px solid black;
+      transition: 0.5s;
+    }
+
+    .eventNumber p:hover,
+    h3:hover {
+      color: #d20a31;
+      background-color: #484848;
+      border: 1px solid #484848;
+      transition: 0.5s;
+    }
+    a {
+      text-decoration: none;
+    }
+
+    .fightDate p {
+      font-weight: bold;
     }
   </style>
 </Layout>

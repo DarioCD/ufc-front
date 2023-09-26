@@ -2,14 +2,10 @@
 const { fighterProp } = Astro.props;
 import { apiUrl } from "../services/apiConfig";
 import { type FighterAPI } from "../types/fighter-api";
+import formatDate from "./FormatDate";
 
 let fighter = fighterProp as FighterAPI;
 
-function formatarFecha(fecha) {
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  const fechaDate = new Date(fecha);
-  return fechaDate.toLocaleDateString("es-ES", options);
-}
 ---
 
 <div class="container">
@@ -44,7 +40,7 @@ function formatarFecha(fecha) {
       </div>
       <div>
         <p>FECHA DE NACIMIENTO</p>
-        <h3>{formatarFecha(fighter.dateOfBirth)}</h3>
+        <h3>{formatDate(fighter.dateOfBirth)}</h3>
       </div>
       <div>
         <p>EDAD</p>

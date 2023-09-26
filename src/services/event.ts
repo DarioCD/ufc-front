@@ -3,7 +3,7 @@ import { type FightAPI } from "../types/fight-api";
 import { apiUrl } from "./apiConfig";
 
 export const getEventById = async ({ id }: { id: number }) => {
-  const res = await fetch(`${apiUrl}ufc/v1/event/1`);
+  const res = await fetch(`${apiUrl}ufc/v1/event/${id}`);
   const data = (await res.json()) as Event;
   return data;
 };

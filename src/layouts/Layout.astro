@@ -37,7 +37,7 @@ const { title } = Astro.props;
   </head>
   <body>
     <Header />
-    <div>
+    <div class="general">
       <slot />
     </div>
     <style is:global>
@@ -49,6 +49,9 @@ const { title } = Astro.props;
         font-family: "Encode Sans", sans-serif;
         background: white;
         font-weight: 400;
+      }
+      .general {
+        overflow-x: hidden;
       }
       body {
         margin: 0px;

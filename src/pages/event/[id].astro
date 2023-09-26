@@ -1,0 +1,183 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { apiUrl } from "../../services/apiConfig";
+import {
+  getEventById,
+  getAllEvents,
+  getFightByEventId,
+} from "../../services/event";
+
+import { type Event } from "../../types/event-api";
+import type { FighterAPI } from "../../types/fighter-api";
+
+const { id } = Astro.params;
+
+let event = {} as Event;
+
+if (id) {
+  event = await getEventById({ id });
+}
+export async function getStaticPaths() {
+  const events = await getAllEvents();
+
+  return events.map((event) => ({
+    params: {
+      id: event.id,
+    },
+  }));
+}
+const fights = await getFightByEventId({ id: event.id });
+---
+
+<Layout title={event.eventNumber + " | UFC"}>
+  {
+    (
+      <div class="container">
+        {fights.map((fight) => {
+          let fighter1 = fight.fighters[0] as FighterAPI;
+          let fighter2 = fight.fighters[1] as FighterAPI;
+
+          if (fighter1.id != fight.winner) {
+            fighter1 = fight.fighters[1];
+            fighter2 = fight.fighters[0];
+          }
+          return (
+            <div class="fighterContainer">
+              <h2>{"Combate en " + fighter1.ranking.name}</h2>
+              <div class="fightContainer">
+                <div>
+                  <div class="imgContainerL">
+                    {fighter1.fighterPhoto == null ? (
+                      <img src={`${apiUrl}ufc/v1/uploads/img/Default.png`} />
+                    ) : (
+                      <img
+                        src={`${apiUrl}ufc/v1/uploads/img/${fighter1.fighterPhoto}`}
+                      />
+                    )}
+                    <div>
+                      {fighter1.rankingNumber === 0 ? (
+                        <p class="etiqueta">Camepón</p>
+                      ) : (
+                        <p class="etiqueta">#{fighter1.rankingNumber}</p>
+                      )}
+                      <p class="nickanme">" {fighter1.nickname} "</p>
+                      <h1>{fighter1.name + " " + fighter1.surname}</h1>
+                    </div>
+                  </div>
+                  <div>
+                    <p>{fighter1.nationality}</p>
+                  </div>
+                </div>
+                <div>
+                  <h1 class="vs">VS</h1>
+                </div>
+                <div>
+                  <div class="imgContainerR">
+                    {fighter2.fighterPhoto == null ? (
+                      <img src={`${apiUrl}ufc/v1/uploads/img/Default.png`} />
+                    ) : (
+                      <img
+                        src={`${apiUrl}ufc/v1/uploads/img/${fighter2.fighterPhoto}`}
+                      />
+                    )}
+                    <div>
+                      {fighter2.rankingNumber === 0 ? (
+                        <p class="etiqueta">Campeón</p>
+                      ) : (
+                        <p class="etiqueta">#{fighter2.rankingNumber}</p>
+                      )}
+                      <p class="nickanme">" {fighter2.nickname} "</p>
+                      <h1>{fighter2.name + " " + fighter2.surname}</h1>
+                    </div>
+                  </div>
+                  <div class="r">
+                    <p>{fighter2.nationality}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    )
+  }
+  <style>
+    .conatiner {
+    }
+    img {
+      height: 200px;
+      width: auto;
+    }
+    .fighterContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin: 20px;
+      transform-origin: center top; /* Establece el punto de transformación en la parte superior */
+      -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+      transition: 0.5s;
+    }
+
+    .fighterContainer:hover {
+      transform: scale(1.05);
+      margin-block: 25px;
+      transition: 0.5s;
+    }
+    .fightContainer {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: row;
+      margin: 20px;
+      width: 90%;
+    }
+    .imgContainerL {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+    }
+    .imgContainerR {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row-reverse;
+    }
+    .etiqueta {
+      display: flex;
+      justify-content: center;
+      width: 50px;
+      margin-inline: 5px;
+      background-color: lightgray;
+      border-radius: 5px;
+      padding: 7px;
+      font-size: 9px;
+    }
+    .nickanme {
+      font-weight: 900;
+      color: #d20a31;
+    }
+    .fightContainer div {
+      flex: 1;
+    }
+    .vs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .r {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+    .info {
+      cursor: pointer;
+      padding: 25px;
+      background-color: black;
+      color: white;
+      margin-bottom: 20px;
+    }
+  </style>
+</Layout>

@@ -73,7 +73,7 @@ let counter = 0;
                 {fighterName2.toUpperCase()}
               </a>
             </h3>
-            <span>{formatarFecha(fight.event.fightDate)}</span>
+            <span>{formatarFecha(fight.event.fightDate) + " - "}  <a class="event" href={`/event/${fight.event.id}`}> {fight.event.eventNumber} </a></span>
             <div class="resultInfoContainer">
               <div>
                 <p>ROUND</p>
@@ -173,4 +173,5 @@ let counter = 0;
   .resultInfoContainer p:nth-child(1) {
     font-weight: bold;
   }
+
 </style>
