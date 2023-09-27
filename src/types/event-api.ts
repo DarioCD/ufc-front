@@ -5,8 +5,9 @@ export type Event = {
   fightDate:   Date;
   place:       string;
   information: string;
-  fights:      Fight[];
+  eventPhoto:  string;
 }
+
 
 export type Fight = {
   id:      number;

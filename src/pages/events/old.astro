@@ -1,0 +1,10 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getAllEvents } from "../../services/event";
+import Eventos from "../../components/Eventos.astro";
+const events = await getAllEvents();
+---
+
+<Layout title="Events | UFC">
+  <Eventos eventProp={events} modeProp={"old"}/>
+</Layout>

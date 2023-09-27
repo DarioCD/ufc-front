@@ -1,4 +1,5 @@
 ---
+import formatDate from "../../components/FormatDate";
 import Layout from "../../layouts/Layout.astro";
 import { apiUrl } from "../../services/apiConfig";
 import {
@@ -33,6 +34,22 @@ const fights = await getFightByEventId({ id: event.id });
   {
     (
       <div class="container">
+        <div class="imgEventContainer">
+          {event?.eventPhoto ? (
+            <img
+              src={`${apiUrl}ufc/v1/uploads/img/${event.eventPhoto}`}
+              alt="Foto de pelador"
+            />
+          ) : (
+            <img
+              src={`${apiUrl}ufc/v1/uploads/img/Default_event_photo.png`}
+              alt="Sin foto"
+            />
+          )}
+        </div>
+        <div class="eventData">
+          <h1>{formatDate(event.fightDate) + ", " + event.place}</h1>
+        </div>
         {fights.map((fight) => {
           let fighter1 = fight.fighters[0] as FighterAPI;
           let fighter2 = fight.fighters[1] as FighterAPI;
@@ -42,71 +59,75 @@ const fights = await getFightByEventId({ id: event.id });
             fighter2 = fight.fighters[0];
           }
           return (
-            <div class="fighterContainer">
-              <h2>{"Combate en " + fighter1.ranking.name}</h2>
-              <div class="fightContainer">
-                <div>
-                  <div class="imgContainerL">
-                    {fighter1.fighterPhoto == null ? (
-                      <img src={`${apiUrl}ufc/v1/uploads/img/Default.png`} />
-                    ) : (
-                      <img
-                        src={`${apiUrl}ufc/v1/uploads/img/${fighter1.fighterPhoto}`}
-                      />
-                    )}
-                    <div>
-                      {fighter1.rankingNumber === 0 ? (
-                        <p class="etiqueta">Camepón</p>
+              <div class="fighterContainer">
+                <h2>{"Combate en " + fighter1.ranking.name}</h2>
+                <div class="fightContainer">
+                  <a href={`/fighter/${fighter1.id}`}>
+                    <div class="imgContainerL">
+                      {fighter1.fighterPhoto == null ? (
+                        <img src={`${apiUrl}ufc/v1/uploads/img/Default.png`} />
                       ) : (
-                        <p class="etiqueta">#{fighter1.rankingNumber}</p>
+                        <img
+                          src={`${apiUrl}ufc/v1/uploads/img/${fighter1.fighterPhoto}`}
+                        />
                       )}
-                      <p class="nickanme">" {fighter1.nickname} "</p>
-                      <h1>{fighter1.name + " " + fighter1.surname}</h1>
+                      <div>
+                        {fighter1.rankingNumber === 0 ? (
+                          <p class="etiqueta">Camepón</p>
+                        ) : (
+                          <p class="etiqueta">#{fighter1.rankingNumber}</p>
+                        )}
+                        <p class="nickanme">" {fighter1.nickname} "</p>
+                        <h1>{fighter1.name + " " + fighter1.surname}</h1>
+                      </div>
                     </div>
-                  </div>
+                    <div>
+                      <p>{fighter1.nationality}</p>
+                    </div>
+                  </a>
                   <div>
-                    <p>{fighter1.nationality}</p>
+                    <h1 class="vs">VS</h1>
                   </div>
-                </div>
-                <div>
-                  <h1 class="vs">VS</h1>
-                </div>
-                <div>
-                  <div class="imgContainerR">
-                    {fighter2.fighterPhoto == null ? (
-                      <img src={`${apiUrl}ufc/v1/uploads/img/Default.png`} />
-                    ) : (
-                      <img
-                        src={`${apiUrl}ufc/v1/uploads/img/${fighter2.fighterPhoto}`}
-                      />
-                    )}
-                    <div>
-                      {fighter2.rankingNumber === 0 ? (
-                        <p class="etiqueta">Campeón</p>
+                  <a href={`/fighter/${fighter2.id}`}>
+                    <div class="imgContainerR">
+                      {fighter2.fighterPhoto == null ? (
+                        <img src={`${apiUrl}ufc/v1/uploads/img/Default.png`} />
                       ) : (
-                        <p class="etiqueta">#{fighter2.rankingNumber}</p>
+                        <img
+                          src={`${apiUrl}ufc/v1/uploads/img/${fighter2.fighterPhoto}`}
+                        />
                       )}
-                      <p class="nickanme">" {fighter2.nickname} "</p>
-                      <h1>{fighter2.name + " " + fighter2.surname}</h1>
+                      <div>
+                        {fighter2.rankingNumber === 0 ? (
+                          <p class="etiqueta">Campeón</p>
+                        ) : (
+                          <p class="etiqueta">#{fighter2.rankingNumber}</p>
+                        )}
+                        <p class="nickanme">" {fighter2.nickname} "</p>
+                        <h1>{fighter2.name + " " + fighter2.surname}</h1>
+                      </div>
                     </div>
-                  </div>
-                  <div class="r">
-                    <p>{fighter2.nationality}</p>
-                  </div>
+                    <div class="r">
+                      <p>{fighter2.nationality}</p>
+                    </div>
+                  </a>
                 </div>
               </div>
-            </div>
           );
         })}
       </div>
     )
   }
   <style>
-    .conatiner {
+    a {
+      text-decoration:none;
+      color: black;
+    }
+    .container {
     }
     img {
       height: 200px;
-      width: auto;
+      width: 300px;
     }
     .fighterContainer {
       display: flex;
@@ -178,6 +199,20 @@ const fights = await getFightByEventId({ id: event.id });
       background-color: black;
       color: white;
       margin-bottom: 20px;
+    }
+    .imgEventContainer {
+    }
+
+    .imgEventContainer img {
+      width: 100%;
+      height: 700px;
+      object-fit: cover;
+    }
+
+    .eventData {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 </Layout>

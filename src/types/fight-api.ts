@@ -19,7 +19,9 @@ export type Event = {
   fightDate:   Date;
   place:       string;
   information: string;
+  eventPhoto:  string;
 }
+
 
 export type Fighter = {
   id:               number;

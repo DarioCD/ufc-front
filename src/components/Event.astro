@@ -1,5 +1,6 @@
 ---
 import { getEventById } from "../services/event";
+import { apiUrl } from "../services/apiConfig";
 
 import Countdown from "./Counter";
 
@@ -24,7 +25,17 @@ function formatDate(dateString: Date) {
 ---
 
 <div class="container">
-  <img src="/assets/adesanya-vd-strickland.jpg" />
+  {event?.eventPhoto ? (
+    <img
+      src={`${apiUrl}ufc/v1/uploads/img/${event.eventPhoto}`}
+      alt="Foto de pelador"
+    />
+  ) : (
+    <img
+      src={`${apiUrl}ufc/v1/uploads/img/Default_event_photo.jpg`}
+      alt="Sin foto"
+    />
+  )}
   {
     event && (
       <div class="eventContainer">

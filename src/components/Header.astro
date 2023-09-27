@@ -19,7 +19,12 @@
       </a>
     </div>
     <div>
-      <a href="/events">Eventos</a>
+      <li>
+        <a href="/events">Eventos</a>
+        <ul class="dropdown">
+          <li><a href="/events/old">Eventos pasados</a></li>
+        </ul>
+      </li>
     </div>
   </ul>
 </header>
@@ -33,7 +38,8 @@
     flex: 2;
   }
 
-  div:nth-child(3), div:nth-child(1) {
+  div:nth-child(3),
+  div:nth-child(1) {
     flex: 1;
   }
   ul {
