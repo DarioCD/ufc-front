@@ -14,6 +14,12 @@ export const getAllEvents = async () => {
   return data;
 };
 
+export const getRecentEvent = async () => {
+  const res = await fetch(`${apiUrl}ufc/v1/event/recent`);
+  const data = (await res.json()) as Event;
+  return data;
+};
+
 export const getFightByEventId = async ({ id }: { id: number }) => {
   const res = await fetch(`${apiUrl}ufc/v1/event/fight/${id}`);
   const data = (await res.json()) as FightApi[];

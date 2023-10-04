@@ -143,7 +143,7 @@ const champFighters = await getChampFighters();
     }
 
     .card:hover p {
-      color: black ;
+      color: black;
       transition: 0.5s;
     }
     a {
@@ -193,6 +193,19 @@ const champFighters = await getChampFighters();
       background: white;
       color: black;
       border: 1px solid black;
+    }
+    @media screen and (max-width: 1000px) {
+      .btnContainer {
+        flex-direction: column;
+      }
+      .btn {
+        margin-bottom: 20px;
+      }
+      .card{
+        padding-inline: 0px;
+        justify-content:center;
+        margin-block:50px;
+      }
     }
   </style>
 </Layout>

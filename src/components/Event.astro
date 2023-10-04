@@ -1,16 +1,9 @@
 ---
-import { getEventById } from "../services/event";
-import { apiUrl } from "../services/apiConfig";
+import { getRecentEvent } from "../services/event";
 
-import Countdown from "./Counter";
+import EventId from "./EventId.astro";
 
-const id = 1;
-
-let event;
-
-if (id) {
-  event = await getEventById({ id: id });
-}
+let event = await getRecentEvent();
 
 function formatDate(dateString: Date) {
   const options: Intl.DateTimeFormatOptions = {
@@ -24,53 +17,9 @@ function formatDate(dateString: Date) {
 }
 ---
 
-<div class="container">
-  {event?.eventPhoto ? (
-    <img
-      src={`${apiUrl}ufc/v1/uploads/img/${event.eventPhoto}`}
-      alt="Foto de pelador"
-    />
-  ) : (
-    <img
-      src={`${apiUrl}ufc/v1/uploads/img/Default_event_photo.jpg`}
-      alt="Sin foto"
-    />
-  )}
-  {
-    event && (
-      <div class="eventContainer">
-        <h3>{event.eventNumber}</h3>
-        <h1>{event.title}</h1>
-        <p>{event.information}</p>
-        <p>{formatDate(event.fightDate)}</p>
-        <Countdown targetDate={event.fightDate} client:visible />
-      </div>
-    )
-  }
+<div>
+  <EventId eventProp={event} mehtodProp={"Home"} />
 </div>
 
 <style>
-  img {
-    position: absolute;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-  }
-
-  .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-  .eventContainer {
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: black;
-    padding-inline: 50px;
-  }
 </style>

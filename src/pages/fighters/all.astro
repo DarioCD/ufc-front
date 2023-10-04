@@ -1,7 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getFighters } from "../../services/fighter";
+import { getFighters, getFightersByName } from "../../services/fighter";
+import { useState } from "preact/hooks";
 import { apiUrl } from "../../services/apiConfig";
+import { type FighterAPI } from "../../types/fighter-api";
+
+import FighterSearch from "../../components/Filter.jsx";
 
 const fighters = await getFighters();
 ---
@@ -12,6 +16,7 @@ const fighters = await getFighters();
       <p class="nickname" style="font-size: 15px;">
         {fighters.length + " peleadores"}
       </p>
+      <!-- <FighterSearch client:visible /> -->
     </div>
   </div>
   <div class="containerCards">
@@ -81,7 +86,7 @@ const fighters = await getFighters();
     }
   </div>
   <style>
-    .flip-card-front img{
+    .flip-card-front img {
       width: auto;
       height: 218px;
     }

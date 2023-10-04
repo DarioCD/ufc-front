@@ -18,3 +18,9 @@ export const getFighterById = async ({ id }: { id: string }) => {
   const fighter = (await res.json()) as FighterAPI;
   return fighter;
 };
+
+export const getFightersByName = async ({ name }: { name: string }) => {
+  const res = await fetch(`${apiUrl}ufc/v1/fighter/search/${name}`);
+  const fighter = (await res.json()) as FighterAPI[];
+  return fighter;
+};

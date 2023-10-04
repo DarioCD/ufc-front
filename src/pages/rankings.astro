@@ -1,12 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getAllRankings } from "../services/ranking";
+import { getAllRankingsp4p } from "../services/rankingp4p";
 import { getFighters } from "../services/fighter";
 import { apiUrl } from "../services/apiConfig";
 
 const rankings = await getAllRankings();
 
+const rankingsp4p = await getAllRankingsp4p();
+
 const fighters = await getFighters();
+
+const sortedFighters = null;
+
 ---
 
 <Layout title="Rankings | UFC">
@@ -44,6 +50,49 @@ const fighters = await getFighters();
                       <div class="fighter">
                         <span style="flex: 1;">
                           <strong>{fighter.rankingNumber}</strong>
+                        </span>
+                        <span style="flex: 4;">
+                          {fighter.name + " "} {fighter.surname}
+                          </span>
+                        </div>
+                    )}
+                  </a>
+                ))}
+          </div>
+        ))
+      }
+      
+      { 
+        rankingsp4p.map((ranking) => (
+          <div class="card">
+            {fighters.sort((a, b) => a.rankingp4pNumber - b.rankingp4pNumber)
+              .filter((fighter) => fighter.rankingP4P && fighter.rankingP4P.id === ranking.id)
+              .map((fighter) => (
+                
+                <a href={`/fighter/${fighter.id}`}>
+                  {fighter.rankingp4pNumber === 1 ? (
+                    <div class="champion">
+                      <p class="rankingName">{ranking.name}</p>
+                        <h3>{fighter.name}</h3><h3> {fighter.surname}</h3>
+                        <p class="championText">Champion</p>
+                        </div>
+                      <>
+                      {fighter.fighterPhoto ? (
+                <img
+                  src={`${apiUrl}ufc/v1/uploads/img/${fighter.fighterPhoto}`}
+                  alt="Foto de pelador"
+                />
+              ) : (
+                <img
+                  src={`${apiUrl}ufc/v1/uploads/img/Default.png`}
+                  alt="Sin foto"
+                />
+              )}
+                      </>
+                    ) : (
+                      <div class="fighter">
+                        <span style="flex: 1;">
+                          <strong>{fighter.rankingp4pNumber}</strong>
                         </span>
                         <span style="flex: 4;">
                           {fighter.name + " "} {fighter.surname}
