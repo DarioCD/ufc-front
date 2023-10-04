@@ -173,5 +173,19 @@ let counter = 0;
   .resultInfoContainer p:nth-child(1) {
     font-weight: bold;
   }
+  @media screen and (max-width: 1000px) {
+    .container {
+      padding-inline: 0px;
+    }
+    .infoContainer {
+      flex-direction: column;
+    }
+    .imgContainer {
+      min-width: 0px;
+    }
+    .resultContainer {
+      margin-inline: 20px;
+    }
+  }
 
 </style>

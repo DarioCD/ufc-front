@@ -25,7 +25,7 @@ function Countdown({ targetDate }) {
 
   return (
     <div>
-      <small>{timeRemaining.days} días, {timeRemaining.hours} horas, {timeRemaining.minutes} minutos, {timeRemaining.seconds} segundos restantes</small>
+      <small>{timeRemaining.days} días, {timeRemaining.hours} horas, {timeRemaining.minutes} minutos, {timeRemaining.seconds} segundos</small>
     </div>
   );
 }

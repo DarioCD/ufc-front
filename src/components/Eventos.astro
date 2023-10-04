@@ -12,6 +12,16 @@ let events = eventProp as Event[];
 ---
 
 {
+  modeProp === "new" && (
+    <div class="eventNumber">
+      <a href={`/events/old`}>
+        <p>Ver eventos pasados</p>
+      </a>
+    </div>
+  )
+}
+
+{
   events.map(async (event) => {
     const fights = await getFightByEventId({ id: event.id });
     const eventDate = new Date(event.fightDate);
